@@ -21,7 +21,7 @@ return [
 
     'allowed_origins' => [
         'http://localhost:5173',
-        'https://framzy-kedai-takjil.vercel.app/',
+        'https://framzy-kedai-takjil.vercel.app',
     ],
 
     'allowed_origins_patterns' => [],
