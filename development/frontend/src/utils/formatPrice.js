@@ -1,8 +1,9 @@
 export const formatPrice = (price) => {
-  return price.toLocaleString("id-ID", {
+  const priceFormated = Math.round(price);
+  return priceFormated.toLocaleString("id-ID", {
     style: "currency",
     currency: "IDR",
 
-    minimumFractionDigits: 0,
+    minimumFractionDigits: 2,
   });
 };
