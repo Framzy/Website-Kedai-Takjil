@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { formatPrice } from "../../utils/formatPrice";
 import { productImages } from "../../assets/images/productImages";
 import CartItemQuantityControl from "./CartItemQuantityControl";
@@ -12,7 +13,10 @@ const CartItem = ({
   const imgSrc = productImages[product.imageKey];
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: "easeInOut", delay: 0.2 }}
       key={cart.product_id}
       className="w-full h-fit even:bg-gray-100 sm:even:bg-white odd:bg-gray-100 rounded-xl"
     >
@@ -40,7 +44,7 @@ const CartItem = ({
           />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

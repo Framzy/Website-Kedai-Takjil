@@ -40,7 +40,7 @@ const Cart = () => {
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: "easeInOut", delay: 0.4 }}
+              transition={{ duration: 0.4, ease: "easeInOut", delay: 0.2 }}
               className="w-full flex flex-col justify-center items-start p-6 sm:p-12 rounded-t-3xl"
             >
               {error ? (

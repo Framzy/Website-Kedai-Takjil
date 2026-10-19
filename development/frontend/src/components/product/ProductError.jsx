@@ -35,7 +35,6 @@ function ProductError({ refetch, isLoading, error, retryCount, maxRetries }) {
         <button
           type="button"
           onClick={() => {
-            console.log("Tombol retry diklik");
             refetch();
           }}
           disabled={isLoading || isNotFound}

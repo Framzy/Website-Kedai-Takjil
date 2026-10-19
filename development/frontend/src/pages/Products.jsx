@@ -18,7 +18,7 @@ const Products = () => {
         <motion.h1
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut", delay: 0.4 }}
+          transition={{ duration: 0.4, ease: "easeInOut", delay: 0.2 }}
           className="w-fit font-bold text-center text-2xl sm:text-4xl text-[var(--color-primary)] 
         px-15 py-2 shadow-[0_10px_8px_-10px_rgba(0,0,0,0.3)]"
         >
@@ -29,7 +29,7 @@ const Products = () => {
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeInOut", delay: 0.4 }}
+        transition={{ duration: 0.4, ease: "easeInOut", delay: 0.2 }}
         className="w-full flex flex-col justify-center items-center bg-[white] rounded-3xl shadow-lg"
       >
         <div className="w-full p-12">

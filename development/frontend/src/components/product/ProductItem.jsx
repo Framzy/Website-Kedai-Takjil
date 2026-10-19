@@ -14,7 +14,10 @@ function ProductItem({ product }) {
 
   return (
     <>
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeInOut", delay: 0.2 }}
         key={product.id}
         className="w-60 h-auto gap-2 rounded-xl shadow-lg p-3 flex flex-col justify-between"
         data-id={product.id}
@@ -82,7 +85,7 @@ function ProductItem({ product }) {
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }
