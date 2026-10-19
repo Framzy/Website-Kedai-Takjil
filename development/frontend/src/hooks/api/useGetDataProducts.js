@@ -3,7 +3,7 @@ import { logger } from "../../utils/logger";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 const MAX_RETRIES = 3;
-const REQUEST_TIMEOUT = 15000;
+const REQUEST_TIMEOUT = 10000;
 const MIN_LOADING_TIME = 1000;
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
