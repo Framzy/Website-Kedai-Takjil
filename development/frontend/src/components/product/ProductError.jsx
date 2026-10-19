@@ -9,7 +9,7 @@ function ProductError({ refetch, isLoading, error, retryCount, maxRetries }) {
     }
 
     if (isConnectionError) {
-      return "Server belum dapat dihubungi. Periksa koneksi atau coba beberapa saat lagi.";
+      return "Server belum dapat dihubungi. Tunggu beberapa saat lagi.";
     }
 
     if (error?.type === "timeout") {
@@ -34,7 +34,10 @@ function ProductError({ refetch, isLoading, error, retryCount, maxRetries }) {
 
         <button
           type="button"
-          onClick={refetch}
+          onClick={() => {
+            console.log("Tombol retry diklik");
+            refetch();
+          }}
           disabled={isLoading || isNotFound}
           className="bg-white px-4 py-2 rounded-2xl shadow-[0_2px_0px_0px_rgba(210,210,210,0.8)]
           text-sm font-semibold text-[var(--color-primary)]
@@ -42,24 +45,13 @@ function ProductError({ refetch, isLoading, error, retryCount, maxRetries }) {
           cursor-pointer hover:text-[var(--color-secondary)]
           hover:bg-[var(--color-primary)] transition-colors duration-300"
         >
-          {isLoading
-            ? "Menghubungkan ke server..."
-            : reachedLimit
-              ? "Mulai Ulang Percobaan"
-              : "Coba Lagi"}
+          {isLoading ? "Menghubungkan ke server..." : "Coba Lagi"}
         </button>
 
-        {reachedLimit && (
-          <p className="font-regular text-sm text-[var(--color-primary)] text-center">
-            Layanan masih belum tersedia. Kamu dapat memulai siklus percobaan
-            baru atau mencoba lagi nanti.
-          </p>
-        )}
-
-        {retryCount > 0 && (
+        {!isLoading && retryCount > 0 && (
           <p className="font-regular text-sm text-[var(--color-primary)] text-center">
             {reachedLimit
-              ? `Sudah mencoba ulang ${maxRetries} kali.`
+              ? " Layanan masih belum tersedia, coba beberapa saat lagi."
               : `Percobaan ulang ${retryCount} dari ${maxRetries} gagal.`}
           </p>
         )}

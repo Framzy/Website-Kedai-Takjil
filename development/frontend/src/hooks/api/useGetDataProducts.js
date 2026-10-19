@@ -4,6 +4,9 @@ import { logger } from "../../utils/logger";
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 const MAX_RETRIES = 3;
 const REQUEST_TIMEOUT = 15000;
+const MIN_LOADING_TIME = 1000;
+
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 function useGetDataProducts() {
   const [products, setProducts] = useState([]);
@@ -28,6 +31,8 @@ function useGetDataProducts() {
     let timedOut = false;
 
     async function fetchProducts() {
+      const startTime = Date.now();
+
       const timeoutId = setTimeout(() => {
         timedOut = true;
         controller.abort();
@@ -35,7 +40,6 @@ function useGetDataProducts() {
 
       try {
         setIsLoading(true);
-        setError(null);
 
         if (!API_BASE_URL) {
           const err = new Error("Konfigurasi URL API belum tersedia.");
@@ -82,6 +86,7 @@ function useGetDataProducts() {
         if (cancelled) return;
 
         setProducts(normalizedProducts);
+        setError(null);
         setRetryCount(0);
       } catch (err) {
         if (cancelled) return;
@@ -122,6 +127,12 @@ function useGetDataProducts() {
       } finally {
         clearTimeout(timeoutId);
 
+        const elapsed = Date.now() - startTime;
+        const remaining = MIN_LOADING_TIME - elapsed;
+
+        if (remaining > 0) {
+          await wait(remaining);
+        }
         if (!cancelled) {
           setIsLoading(false);
         }
