@@ -1,16 +1,86 @@
-# React + Vite
+# Kedai Takjil — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React frontend for the Kedai Takjil e-commerce application.
 
-Currently, two official plugins are available:
+## 1. Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The frontend provides the user interface for browsing takjil products, managing the shopping cart, and completing the checkout flow.
 
-## React Compiler
+It communicates with the Laravel backend through REST API requests and uses browser `localStorage` to preserve shopping cart contents across page reloads.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 2. Tech Stack
 
-## Expanding the ESLint configuration
+- **UI Library:** React
+- **Build Tool:** Vite
+- **Styling:** Tailwind CSS
+- **Routing:** React Router
+- **API Communication:** REST API with JSON
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 3. Features
+
+- Browse products and view product details.
+- Add, remove, and update shopping cart items.
+- Calculate order totals.
+- Submit orders through checkout.
+- Display loading states and handle API errors with retry functionality.
+- Preserve cart contents using `localStorage`.
+
+## 4. Getting Started
+
+### Requirements
+
+- Node.js
+- npm
+- A running Kedai Takjil backend API
+
+### Installation
+
+Navigate to the frontend directory:
+
+```bash
+cd development/frontend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+### Environment Configuration
+
+Create a `.env` file in the frontend directory:
+
+```env
+VITE_API_URL=http://localhost:8000/api
+```
+
+`VITE_API_URL` specifies the base URL of the backend API. Update it to match your backend address.
+
+Do not put database credentials, private API keys, or other secrets in frontend environment variables. Variables prefixed with `VITE_` are exposed to client-side code.
+
+### Run the Development Server
+
+```bash
+npm run dev
+```
+
+Vite displays the local development URL in the terminal.
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+The production build is generated in the `dist` directory by default.
+
+## 5. Deployment
+
+The frontend is deployed on Vercel.
+
+Configure `VITE_API_URL` in the Vercel project environment variables to point to the deployed Laravel API. Redeploy the frontend after changing production environment variables.
+
+## 6. Related Documentation
+
+See the root README for the complete application architecture, backend setup, API reference, live demo, and repository links.

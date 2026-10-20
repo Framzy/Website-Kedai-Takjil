@@ -1,58 +1,135 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Kedai Takjil — Backend
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Laravel REST API for the Kedai Takjil e-commerce application.
 
-## About Laravel
+## 1. Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The backend provides product data and handles order creation. It validates incoming requests, calculates order totals using database prices, and stores orders and their associated items.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 2. Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Language:** PHP
+- **Framework:** Laravel 13
+- **Database:** TiDB Cloud (MySQL-compatible)
+- **API Format:** REST API with JSON
+- **Containerization:** Docker
+- **Testing:** PHPUnit
 
-## Learning Laravel
+## 3. API Reference
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| Method | Endpoint             | Description                             |
+| ------ | -------------------- | --------------------------------------- |
+| `GET`  | `/api/products`      | Retrieve the product list.              |
+| `GET`  | `/api/products/{id}` | Retrieve details of a specific product. |
+| `POST` | `/api/orders`        | Create a new order.                     |
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 4. Getting Started
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### Requirements
 
-## Agentic Development
+- PHP
+- Composer
+- Access to a compatible MySQL database
+- Docker (optional)
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### Installation
+
+Navigate to the backend directory:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+cd development/backend
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Install dependencies:
 
-## Contributing
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Environment Configuration
 
-## Code of Conduct
+Create a `.env` file based on `.env.example`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Configure the application and database settings for your environment. The following is an example for a local MySQL database:
 
-## Security Vulnerabilities
+```env
+APP_NAME="Kedai Takjil"
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
+APP_URL=http://localhost:8000
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+LOG_CHANNEL=stderr
+LOG_LEVEL=debug
 
-## License
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=kedai_takjil
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+SESSION_DRIVER=file
+CACHE_STORE=file
+QUEUE_CONNECTION=sync
+```
+
+Replace the database values with your own configuration. For TiDB Cloud, configure the required connection settings and SSL options.
+
+Never commit your actual `.env` file or expose database credentials and application secrets.
+
+Generate the application key:
+
+```bash
+php artisan key:generate
+```
+
+### Database Setup
+
+Run the database migrations:
+
+```bash
+php artisan migrate
+```
+
+Seed the initial product data:
+
+```bash
+php artisan db:seed
+```
+
+Ensure the database connection is configured correctly before running these commands.
+
+### Run the Development Server
+
+```bash
+php artisan serve
+```
+
+The API is available at `http://localhost:8000` by default.
+
+## 5. Testing
+
+Run the backend test suite:
+
+```bash
+php artisan test
+```
+
+Use the test results to verify the current application behavior after making changes.
+
+## 6. Docker
+
+The backend includes a Dockerfile for containerized builds.
+
+Build the image from the backend directory:
+
+```bash
+docker build -t kedai-takjil-api .
+```
+
+Production deployment runs on Render. Configure production environment variables and database connectivity in the deployment environment.
+
+## 7. Related Documentation
+
+See the root README for the overall project architecture, frontend setup, live demo, and repository links.
