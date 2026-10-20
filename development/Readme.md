@@ -4,7 +4,8 @@ A responsive mini e-commerce web application for browsing takjil products and pl
 
 ## 1. Overview
 
-![alt text](thumbnail_project02.webp)
+<img width="1920" height="1097" alt="project_thumbnail" src="https://github.com/user-attachments/assets/e61ef46a-4ad5-4f78-9cbb-8cd36f68ad79" />
+
 Kedai Takjil is a full-stack portfolio project built to demonstrate frontend development, backend API integration, and database management.
 
 Users can browse products, manage a shopping cart, and place orders through a checkout flow.
