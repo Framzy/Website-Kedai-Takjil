@@ -29,13 +29,12 @@ class ProductSeeder extends Seeder
 
         foreach ($products as $product) {
             DB::table('products')->updateOrInsert(
-                ['id' => $product['id']],
                 [
                     'name' => $product['name'],
                     'price' => $product['price'],
                     'image_key' => $product['imageKey'],
                     'description' => $product['description'] ?? null,
-                    'is_available' => true,
+                    'is_available' =>  $product['is_available'] ?? false,
                     'updated_at' => now(),
                     'created_at' => now(),
                 ]

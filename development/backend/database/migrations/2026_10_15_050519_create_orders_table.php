@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string('customer_name');
+            $table->string('customer_phone', 20);
+            $table->text('customer_address');
+            $table->decimal('total_amount', 12, 2);
+            $table->string('status', 30)->default('pending');
             $table->timestamps();
         });
     }

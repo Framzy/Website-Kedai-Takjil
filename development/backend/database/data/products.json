@@ -4,95 +4,95 @@
         "name": "Es Buah",
         "price": 15000,
         "imageKey": "product_img_1",
-        "sold": 100,
-        "description": "Minuman segar dengan aneka potongan buah."
+        "description": "Minuman segar dengan aneka potongan buah.",
+        "is_available": true
     },
     {
         "id": 2,
         "name": "Es Campur",
         "price": 15000,
         "imageKey": "product_img_2",
-        "sold": 80,
-        "description": "Minuman dingin dengan campuran bahan manis dan segar."
+        "description": "Minuman dingin dengan campuran bahan manis dan segar.",
+        "is_available": true
     },
     {
         "id": 3,
         "name": "Es Cappucino",
         "price": 15000,
         "imageKey": "product_img_3",
-        "sold": 50,
-        "description": "Minuman kopi cappucino yang disajikan dingin dengan es."
+        "description": "Minuman kopi cappucino yang disajikan dingin dengan es.",
+        "is_available": true
     },
     {
         "id": 4,
         "name": "Es Cendol",
         "price": 10000,
         "imageKey": "product_img_4",
-        "sold": 120,
-        "description": "Minuman cendol yang disajikan dingin dengan es."
+        "description": "Minuman cendol yang disajikan dingin dengan es.",
+        "is_available": true
     },
     {
         "id": 5,
         "name": "Es Coklat",
         "price": 10000,
         "imageKey": "product_img_5",
-        "sold": 90,
-        "description": "Minuman coklat yang disajikan dingin dengan es."
+        "description": "Minuman coklat yang disajikan dingin dengan es.",
+        "is_available": true
     },
     {
         "id": 6,
         "name": "Es Green Tea",
         "price": 10000,
         "imageKey": "product_img_6",
-        "sold": 70,
-        "description": "Minuman teh hijau yang disajikan dingin dengan es."
+        "description": "Minuman teh hijau yang disajikan dingin dengan es.",
+        "is_available": true
     },
     {
         "id": 7,
         "name": "Es Kelapa",
         "price": 15000,
         "imageKey": "product_img_7",
-        "sold": 110,
-        "description": "Minuman kelapa yang disajikan dingin dengan es."
+        "description": "Minuman kelapa yang disajikan dingin dengan es.",
+        "is_available": true
     },
     {
         "id": 8,
         "name": "Es Pisang Hijau",
         "price": 15000,
         "imageKey": "product_img_8",
-        "sold": 130,
-        "description": "Minuman pisang hijau yang disajikan dingin dengan es."
+        "description": "Minuman pisang hijau yang disajikan dingin dengan es.",
+        "is_available": true
     },
     {
         "id": 9,
         "name": "Es Teh",
         "price": 10000,
         "imageKey": "product_img_9",
-        "sold": 60,
-        "description": "Minuman teh yang disajikan dingin dengan es."
+        "description": "Minuman teh yang disajikan dingin dengan es.",
+        "is_available": true
     },
     {
         "id": 10,
         "name": "Es Teler",
         "price": 15000,
         "imageKey": "product_img_10",
-        "sold": 40,
-        "description": "Minuman aneka potongan buah dan susu kental manis yang disajikan dingin dengan es."
+        "description": "Minuman aneka potongan buah dan susu kental manis yang disajikan dingin dengan es.",
+        "is_available": true
     },
     {
         "id": 11,
         "name": "Es Timunsuri",
         "price": 15000,
         "imageKey": "product_img_11",
-        "sold": 30,
-        "description": "Minuman timunsuri yang disajikan dingin dengan es."
+        "description": "Minuman timunsuri yang disajikan dingin dengan es.",
+        "is_available": true
     },
     {
         "id": 12,
         "name": "Es Kolak Pisang",
         "price": 10000,
         "imageKey": "product_img_12",
-        "sold": 20,
-        "description": "Minuman kolak pisang yang disajikan dingin dengan es."
+        "description": "Minuman kolak pisang yang disajikan dingin dengan es.",
+        "is_available": true
     }
 ]
