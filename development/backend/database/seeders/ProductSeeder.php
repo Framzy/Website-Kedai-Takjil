@@ -30,7 +30,9 @@ class ProductSeeder extends Seeder
         foreach ($products as $product) {
             DB::table('products')->updateOrInsert(
                 [
-                    'name' => $product['name'],
+                    'name' => $product['nama'],
+                ],
+                [
                     'price' => $product['price'],
                     'image_key' => $product['imageKey'],
                     'description' => $product['description'] ?? null,

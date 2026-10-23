@@ -18,6 +18,8 @@ class OrderItem extends Model
     protected function casts(): array
     {
         return [
+            'product_id' => 'integer',
+            'order_id' => 'integer',
             'quantity' => 'integer',
             'unit_price' => 'decimal:2',
             'subtotal' => 'decimal:2',
