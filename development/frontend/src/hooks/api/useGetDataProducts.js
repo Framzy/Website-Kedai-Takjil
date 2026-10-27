@@ -94,7 +94,7 @@ function useGetDataProducts() {
         if (timedOut) {
           setError({
             message:
-              "Server tidak merespons dalam 15 detik. Silakan coba lagi.",
+              "Server tidak merespons dalam 10 detik. Silakan coba lagi.",
             type: "timeout",
             status: null,
           });
