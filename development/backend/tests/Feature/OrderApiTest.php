@@ -129,5 +129,163 @@ class OrderApiTest extends TestCase
             'subtotal' => 20000,
         ]);
     }
+    
+    public function test_checkout_with_multiple_products(): void
+    {
+        $product1 = Product::create([
+            'name' => 'Es Buah',
+            'description' => 'Minuman segar',
+            'price' => 10000,
+            'image_key' => 'product_img_1',
+            'is_available' => true,
+        ]);
+
+        $product2 = Product::create([
+            'name' => 'Es Teh',
+            'description' => 'Teh dingin',
+            'price' => 5000,
+            'image_key' => 'product_img_2',
+            'is_available' => true,
+        ]);
+
+        $response = $this->postJson('/api/orders', [
+            'customer_name' => 'Pelanggan Test',
+            'customer_phone' => '081234567890',
+            'customer_address' => 'Alamat untuk testing',
+            'items' => [
+                [
+                    'product_id' => $product1->id,
+                    'quantity' => 2,
+                ],
+                [
+                    'product_id' => $product2->id,
+                    'quantity' => 1,
+                ],
+            ],
+        ]);
+
+        $response->assertCreated()
+            ->assertJsonPath('data.total_amount', '25000.00');
+
+        $this->assertDatabaseCount('orders', 1);
+        $this->assertDatabaseCount('order_items', 2);
+    }
+
+    
+    public function test_checkout_rejects_unavailable_product(): void
+    {
+        $product = Product::create([
+            'name' => 'Es Buah',
+            'description' => 'Minuman segar',
+            'price' => 10000,
+            'image_key' => 'product_img_1',
+            'is_available' => false,
+        ]);
+
+        $response = $this->postJson('/api/orders', [
+            'customer_name' => 'Pelanggan Test',
+            'customer_phone' => '081234567890',
+            'customer_address' => 'Alamat untuk testing',
+            'items' => [
+                [
+                    'product_id' => $product->id,
+                    'quantity' => 1,
+                ],
+            ],
+        ]);
+
+        $response->assertUnprocessable()
+            ->assertJsonValidationErrors('items');
+
+        $this->assertDatabaseCount('orders', 0);
+    }
+    
+    public function test_checkout_rejects_invalid_quantity(): void
+    {
+        $product = Product::create([
+            'name' => 'Es Buah',
+            'description' => 'Minuman segar',
+            'price' => 10000,
+            'image_key' => 'product_img_1',
+            'is_available' => true,
+        ]);
+
+        foreach ([0, -1, 'abc'] as $quantity) {
+            $response = $this->postJson('/api/orders', [
+                'customer_name' => 'Pelanggan Test',
+                'customer_phone' => '081234567890',
+                'customer_address' => 'Alamat untuk testing',
+                'items' => [
+                    [
+                        'product_id' => $product->id,
+                        'quantity' => $quantity,
+                    ],
+                ],
+            ]);
+
+            $response->assertUnprocessable()
+                ->assertJsonValidationErrors('items.0.quantity');
+        }
+
+        $this->assertDatabaseCount('orders', 0);
+    }
+
+    public function test_checkout_rejects_duplicate_product_ids(): void
+    {
+        $product = Product::create([
+            'name' => 'Es Buah',
+            'description' => 'Minuman segar',
+            'price' => 10000,
+            'image_key' => 'product_img_1',
+            'is_available' => true,
+        ]);
+
+        $response = $this->postJson('/api/orders', [
+            'customer_name' => 'Pelanggan Test',
+            'customer_phone' => '081234567890',
+            'customer_address' => 'Alamat untuk testing',
+            'items' => [
+                ['product_id' => $product->id, 'quantity' => 1],
+                ['product_id' => $product->id, 'quantity' => 2],
+            ],
+        ]);
+
+        $response->assertUnprocessable()
+            ->assertJsonValidationErrors('items.1.product_id');
+
+        $this->assertDatabaseCount('orders', 0);
+    }
+    
+    public function test_checkout_rolls_back_when_order_item_creation_fails(): void
+    {
+        $product = Product::create([
+            'name' => 'Es Buah',
+            'description' => 'Minuman segar',
+            'price' => 10000,
+            'image_key' => 'product_img_1',
+            'is_available' => true,
+        ]);
+
+        config([
+            'app.testing_fail_order_items_insert' => true,
+        ]);
+
+        $response = $this->postJson('/api/orders', [
+            'customer_name' => 'Pelanggan Test',
+            'customer_phone' => '081234567890',
+            'customer_address' => 'Alamat untuk testing',
+            'items' => [
+                [
+                    'product_id' => $product->id,
+                    'quantity' => 1,
+                ],
+            ],
+        ]);
+
+        $response->assertServerError();
+
+        $this->assertDatabaseCount('orders', 0);
+        $this->assertDatabaseCount('order_items', 0);
+    }
 
 }

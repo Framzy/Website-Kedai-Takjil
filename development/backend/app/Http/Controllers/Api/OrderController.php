@@ -82,6 +82,15 @@ class OrderController extends Controller
                 'status' => 'pending',
             ]);
 
+            if (
+                app()->environment('testing')
+                && config('app.testing_fail_order_items_insert', false)
+            ) {
+                throw new \RuntimeException(
+                    'Simulated order_items insertion failure.'
+                );
+            }
+
             foreach ($validated['items'] as $item) {
                 $product = $products->get($item['product_id']);
                 $quantity = (int) $item['quantity'];
