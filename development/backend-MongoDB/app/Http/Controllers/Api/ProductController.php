@@ -42,13 +42,13 @@ class ProductController extends Controller
             $data = array_map(function ($product) use ($soldByProduct) {
                 $item = (array) $product;
 
-                // Convert price to float
-                $item['price'] = (float) (string) $item['price'];
-                $item['sold'] = $soldByProduct[(string) $product->id] ?? 0;
-                
-                // Remove _id
+                $productId = $product->id;
+
+                $item['price'] = (float) (string) $product->price;
+                $item['sold'] = $soldByProduct[(string) $productId] ?? 0;
+
                 unset($item['_id']);
-                
+
                 return $item;
             }, $products);
 
@@ -97,8 +97,11 @@ class ProductController extends Controller
             ->toArray();
 
             $data = (array) $product;
-            $data['price'] = (float) (string) $data['price'];
+
+            $data['price'] = (float) (string) $product->price;
             $data['sold'] = isset($sales[0]) ? $sales[0]->sold : 0;
+
+            unset($data['_id']);
 
             return response()->json([
                 'data' => $data,
