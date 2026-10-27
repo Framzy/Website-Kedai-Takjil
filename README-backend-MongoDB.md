@@ -9,39 +9,43 @@ independently.
 
 ## 1. Tech Stack
 
--   **Language:** PHP 8.4
--   **Framework:** Laravel 13
--   **Database:** MongoDB Atlas
--   **Laravel integration:** `mongodb/laravel-mongodb`
--   **API format:** REST API with JSON
--   **Automated tests:** PHPUnit / Laravel testing tools
+- **Language:** PHP 8.4
+- **Framework:** Laravel 13
+- **Database:** MongoDB Atlas
+- **Laravel integration:** `mongodb/laravel-mongodb`
+- **API format:** REST API with JSON
+- **Automated tests:** PHPUnit / Laravel testing tools
 
 ## 2. Features
 
--   Retrieve available products.
--   Retrieve an available product by ID.
--   Validate and create customer orders.
--   Store order items and calculate order totals using product prices
-    from MongoDB.
--   Use a MongoDB transaction for order creation and its order items.
--   Run automated API tests against a dedicated test database.
--   Verify rollback behavior when order-item insertion fails.
+- Retrieve available products.
+- Retrieve an available product by ID.
+- Validate and create customer orders.
+- Store order items and calculate order totals using product prices
+  from MongoDB.
+- Use a MongoDB transaction for order creation and its order items.
+- Run automated API tests against a dedicated test database.
+- Verify rollback behavior when order-item insertion fails.
 
 ## 3. API Endpoints
 
-  -----------------------------------------------------------------------
-  Method                  Endpoint                Description
-  ----------------------- ----------------------- -----------------------
-  `GET`                   `/api/products`         Retrieve available
-                                                  products, including
-                                                  sold quantities.
+---
 
-  `GET`                   `/api/products/{id}`    Retrieve one available
-                                                  product by ID.
+Method Endpoint Description
 
-  `POST`                  `/api/orders`           Validate and create an
-                                                  order with its items.
-  -----------------------------------------------------------------------
+---
+
+`GET` `/api/products` Retrieve available
+products, including
+sold quantities.
+
+`GET` `/api/products/{id}` Retrieve one available
+product by ID.
+
+`POST` `/api/orders` Validate and create an
+order with its items.
+
+---
 
 The API uses JSON. The frontend should continue using the same API
 contract as the Kedai Takjil application.
@@ -50,7 +54,7 @@ contract as the Kedai Takjil application.
 
 Example request body:
 
-``` json
+```json
 {
   "customer_name": "Example Customer",
   "customer_phone": "081234567890",
@@ -76,10 +80,10 @@ client.
 
 This implementation uses the following collections:
 
--   `products` --- product details, price, image key, and availability.
--   `orders` --- customer details, order total, and order status.
--   `order_items` --- products and quantities associated with an order,
-    including the unit price and subtotal recorded at order time.
+- `products` --- product details, price, image key, and availability.
+- `orders` --- customer details, order total, and order status.
+- `order_items` --- products and quantities associated with an order,
+  including the unit price and subtotal recorded at order time.
 
 The implementation uses numeric `id` values to identify products.
 MongoDB documents also have their own `_id` field, typically an
@@ -95,7 +99,7 @@ consistency.
 
 The MongoDB connection is configured in `config/database.php`:
 
-``` php
+```php
 'mongodb' => [
     'driver' => 'mongodb',
     'dsn' => env('MONGODB_URI'),
@@ -111,23 +115,23 @@ collection API directly for queries and writes.
 
 ### Requirements
 
--   PHP 8.4
--   Composer
--   MongoDB Atlas account and a database user
--   MongoDB PHP extension enabled
--   Network access from the development machine to the Atlas cluster
+- PHP 8.4
+- Composer
+- MongoDB Atlas account and a database user
+- MongoDB PHP extension enabled
+- Network access from the development machine to the Atlas cluster
 
 ### Install dependencies
 
 From the MongoDB backend directory:
 
-``` bash
+```bash
 composer install
 ```
 
 If the project has not yet been configured:
 
-``` bash
+```bash
 copy .env.example .env
 php artisan key:generate
 ```
@@ -139,7 +143,7 @@ Windows Command Prompt.
 
 Create or update `.env` in this backend directory:
 
-``` env
+```env
 APP_NAME="Kedai Takjil MongoDB"
 APP_ENV=local
 APP_KEY=
@@ -163,13 +167,13 @@ credentials.
 
 After changing connection settings, run:
 
-``` bash
+```bash
 php artisan config:clear
 ```
 
 ### Run the application
 
-``` bash
+```bash
 php artisan serve
 ```
 
@@ -198,7 +202,7 @@ development database.
 
 Example environment configuration:
 
-``` env
+```env
 MONGODB_DATABASE="kedai_takjil_mongodb_test"
 ```
 
@@ -209,7 +213,7 @@ before executing tests.
 
 Run the full test suite:
 
-``` bash
+```bash
 php artisan config:clear
 php artisan test
 ```
@@ -218,16 +222,16 @@ php artisan test
 
 The current suite includes tests for:
 
--   Listing available products.
--   Excluding unavailable products from the product list.
--   Creating an order and its order items.
--   Rejecting empty order items and nonexistent products.
--   Calculating totals from database prices rather than client-supplied
-    values.
--   Creating an order with multiple products.
--   Rejecting unavailable products at checkout.
--   Rejecting invalid quantities and duplicate product IDs.
--   Rolling back an order when order-item insertion fails.
+- Listing available products.
+- Excluding unavailable products from the product list.
+- Creating an order and its order items.
+- Rejecting empty order items and nonexistent products.
+- Calculating totals from database prices rather than client-supplied
+  values.
+- Creating an order with multiple products.
+- Rejecting unavailable products at checkout.
+- Rejecting invalid quantities and duplicate product IDs.
+- Rolling back an order when order-item insertion fails.
 
 The latest reported run passed **13 tests with 61 assertions**. This
 result describes the state of the suite at the time it was run; rerun
@@ -237,7 +241,7 @@ result describes the state of the suite at the time it was run; rerun
 
 Typical Laravel directories used by this backend:
 
-``` text
+```text
 backend-MongoDB/
 ├── app/
 │   ├── Http/Controllers/
@@ -257,15 +261,15 @@ The exact files may vary as the implementation evolves.
 
 ## 10. Security and Reliability Notes
 
--   Keep MongoDB Atlas credentials and application secrets out of source
-    control.
--   Use a dedicated test database; never run automated tests against the
-    development database.
--   Validate client input and calculate prices on the server.
--   Keep transaction handling around order creation and order-item
-    insertion.
--   Avoid exposing detailed exception or database error information to
-    clients in production.
--   Review authorization, rate limiting, concurrency behavior, logging,
-    and deployment configuration before using the API for real customer
-    orders.
+- Keep MongoDB Atlas credentials and application secrets out of source
+  control.
+- Use a dedicated test database; never run automated tests against the
+  development database.
+- Validate client input and calculate prices on the server.
+- Keep transaction handling around order creation and order-item
+  insertion.
+- Avoid exposing detailed exception or database error information to
+  clients in production.
+- Review authorization, rate limiting, concurrency behavior, logging,
+  and deployment configuration before using the API for real customer
+  orders.

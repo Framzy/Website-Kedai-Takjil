@@ -34,13 +34,18 @@ Users can browse products, manage a shopping cart, and place orders through a ch
 - **Frontend:** React, Vite, Tailwind CSS
 - **Routing:** React Router
 - **Backend:** PHP, Laravel 13
-- **Database:** TiDB Cloud (MySQL-compatible)
+- **Database options:**
+  - MySQL-compatible database (TiDB Cloud)
+  - Microsoft SQL Server (local development)
+  - MongoDB Atlas (production backend on Render)
 - **Containerization:** Docker
 - **Deployment:** Vercel (frontend), Render (backend)
 
 ## 4. Architecture
 
 The application separates the frontend and backend to keep user interface responsibilities separate from business logic and data management.
+
+### Production architecture
 
 ```text
 User
@@ -53,8 +58,20 @@ React Frontend (Vercel)
 Laravel Backend (Docker on Render)
   |
   v
-TiDB Cloud Database
+MongoDB Atlas
 ```
+
+### Database configurations
+
+The backend has been tested with different database configurations:
+
+| Environment | Database                               | Purpose                                                 |
+| ----------- | -------------------------------------- | ------------------------------------------------------- |
+| Local       | MySQL-compatible database (TiDB Cloud) | MySQL-compatible development/configuration              |
+| Local       | Microsoft SQL Server (MSSQL)           | Alternative local database configuration                |
+| Production  | MongoDB Atlas                          | Database used by the Laravel backend deployed on Render |
+
+Database drivers, connection variables, migrations, and query implementations may differ between configurations. Use the configuration and code that match the backend version being run.
 
 ```text
 Website-Kedai-Takjil/
@@ -77,7 +94,7 @@ Website-Kedai-Takjil/
 └── README.md
 ```
 
-The project separates the frontend and backend into dedicated directories. The frontend manages the user interface and cart state, while the backend handles API requests, business logic, database operations, and order processing.
+The frontend manages the user interface and cart state, while the backend handles API requests, business logic, database operations, and order processing.
 
 ### How It Works
 
@@ -107,7 +124,7 @@ The API uses JSON for request and response data.
 - Node.js and npm
 - PHP and Composer
 - Docker (optional, for running the backend as a container)
-- Access to a compatible MySQL database
+- The database driver and database server required by the selected configuration
 
 ### Frontend Setup
 
@@ -139,60 +156,111 @@ cd development/backend
 composer install
 ```
 
-#### Environment Configuration
+Create a `.env` file based on `.env.example`. Configure the variables for the database configuration you intend to use.
 
-Create a `.env` file based on `.env.example` in the backend directory.
+### Option A: MySQL TiDB Cloud (production on Render)
 
-Configure the required environment variables for your local environment:
+The deployed backend uses TiDB Cloud. Configure these variables in **Render Dashboard → Web Service → Environment**:
 
 ```env
 APP_NAME="Kedai Takjil"
-APP_ENV=local
-APP_KEY=
-APP_DEBUG=true
-APP_URL=http://localhost:8000
+APP_ENV=production
+APP_KEY=laravel_key
+APP_DEBUG=false
+APP_URL=https://your-render-service.onrender.com
 
 LOG_CHANNEL=stderr
 LOG_LEVEL=debug
 
 DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
+DB_HOST=TiDB_host
+DB_PORT=4000
 DB_DATABASE=kedai_takjil
 DB_USERNAME=your_username
 DB_PASSWORD=your_password
+MYSQL_ATTR_SSL_CA=CA_TiDB.pem
 
 SESSION_DRIVER=file
 CACHE_STORE=file
 QUEUE_CONNECTION=sync
 ```
 
-Replace the database values with your own configuration. If you use TiDB Cloud, configure the appropriate connection settings and SSL requirements.
+Replace the database values with your own configuration. For TiDB Cloud, use the connection settings and SSL requirements provided by TiDB.
 
-**Never commit your actual `.env` file or expose database credentials and application secrets.**
+### Option B: Microsoft SQL Server (local)
 
-Generate the application key:
+Use this configuration only with a backend version configured for Laravel's SQL Server driver. Ensure the PHP SQL Server/PDO SQL Server extensions and the required SQL Server connectivity components are installed.
+
+```env
+DB_CONNECTION=sqlsrv
+DB_HOST=127.0.0.1
+DB_PORT=1433
+DB_DATABASE=kedai_takjil
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
+
+Adjust the host, port, database, and credentials to match the local SQL Server instance. Do not use this configuration with a backend version whose database queries or models are specifically written for MongoDB.
+
+### Option C: MongoDB Atlas (production on Render)
+
+The deployed backend uses MongoDB Atlas. Configure these variables in **Render Dashboard → Web Service → Environment**:
+
+```env
+APP_NAME=Kedai-Takjil-MongoDB
+APP_ENV=production
+APP_KEY=laravel_key
+APP_DEBUG=false
+APP_URL=https://your-render-service.onrender.com
+
+LOG_CHANNEL=stderr
+LOG_LEVEL=warning
+
+DB_CONNECTION=mongodb
+MONGODB_URI=your_mongodb_atlas_connection_string
+MONGODB_DATABASE=your_database_name
+
+SESSION_DRIVER=file
+CACHE_STORE=file
+QUEUE_CONNECTION=sync
+```
+
+Use the actual service URL and database values. Keep `APP_KEY` set to the valid Laravel application key already configured for the deployment. Do not commit secrets or put actual credentials in this README.
+
+For Atlas connectivity, ensure the Render service's applicable outbound IP addresses are allowed in MongoDB Atlas **Network Access**. The Docker image must include the MongoDB PHP extension with SSL/TLS support.
+
+> **Important:** Environment variables alone do not make one database implementation compatible with another. The local MSSQL, MySQL-compatible, and production MongoDB configurations must match the active Laravel connection configuration, installed PHP extensions/packages, migrations, models, and query code.
+
+### Generate the application key
+
+For a new local environment, generate an application key:
 
 ```bash
 php artisan key:generate
 ```
 
-Run database migrations and seed the initial product data:
+Do not generate a replacement key for an existing production deployment unless you intentionally plan to rotate it.
+
+### Database setup
+
+Run migrations and seeders only when they are compatible with the selected database implementation:
 
 ```bash
 php artisan migrate
 php artisan db:seed
 ```
 
-Start the Laravel development server:
+For MongoDB, confirm that the migrations, seeders, models, and queries are implemented for the MongoDB package and the current database structure before running these commands.
+
+### Run the Laravel development server
 
 ```bash
 php artisan serve
 ```
 
-Ensure that the frontend API URL matches the backend address and that the database connection is configured correctly.
+Ensure that the frontend API URL matches the backend address and that the selected database connection is configured correctly.
 
-### Docker
+### Docker and deployment
 
 The backend includes a Docker configuration for containerized deployment.
 
@@ -202,7 +270,7 @@ Build the backend image from the backend directory:
 docker build -t kedai-takjil-api .
 ```
 
-For production deployment, the frontend is hosted on Vercel and the backend runs on Render. Production environment variables are configured in the deployment environment.
+The production frontend is hosted on Vercel and the Laravel backend runs on Render. Production environment variables are configured in Render, not committed to the repository.
 
 ## 6. Demo & Links
 
